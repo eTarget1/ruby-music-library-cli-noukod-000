@@ -20,6 +20,11 @@ class Artist
 
   end
 
+  def self.destroy_all
+    
+    
+  end
+
   end
 
 
