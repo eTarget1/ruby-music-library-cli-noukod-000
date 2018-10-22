@@ -25,9 +25,9 @@ class Artist
 
   end
 
-  def self.create
-    
-    
+  def self.create(name)
+
+
   end
 
   end
