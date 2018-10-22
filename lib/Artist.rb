@@ -25,6 +25,11 @@ class Artist
 
   end
 
+  def self.create
+    
+    
+  end
+
   end
 
 
