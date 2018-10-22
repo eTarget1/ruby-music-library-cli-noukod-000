@@ -15,8 +15,8 @@ class Artist
 
   end
 
-  def saved
-    @all<<self
+  def save
+    @@all << self
 
   end
 
