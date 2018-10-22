@@ -1,48 +1,62 @@
 require 'pry'
-
-class MusicLibraryController
-  attr_accessor :importer
-  
-  def initialize(path="./db/mp3s")
-    @importer = MusicImporter.new(path)
-    importer.import
+ class MusicLibraryController
+   def initialize(path = "./db/mp3s")
+    MusicImporter.new(path).import
   end
    def call
-    puts "You! Welcome to this cool Music Library!"
-    command = " "
-     until command == "exit"
-      puts "Type in one of the following commands:"
-      puts "List Songs"
-      puts "List Artists"
-      puts "List Genres"
-      puts "Play Song"
-      puts "List Artist"
-      puts "List Genre"
-      command = gets.chomp.downcase
-      case command
-       when "list songs"
-         Song.all.each_with_index{|song, index|
-         puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"}
-      when "list artists"
-        Artist.all.each{|artist| puts artist.name}
+    input = ""
+    until input == "exit"
+      puts "Please enter action"
+      input = gets.chomp
+      case input
+      when "list songs"
+        list_songs
+      when "list artists" 
+        list_artists
       when "list genres"
-        Genre.all.each{|genre| puts genre.name}
+        list_genres
       when "play song"
-        puts "Which song?"
-        song = gets.chomp.to_i
-        file_name = Song.all[song - 1]
-        puts "Playing #{file_name.artist.name} - #{file_name.name} - #{file_name.genre.name}"
+        play_song
       when "list artist"
-        puts "Which artist?"
-        artist = gets.chomp
-        artist = Artist.find_by_name(artist)
-        artist.songs.each{|a| puts "#{artist.name} - #{a.name} - #{a.genre.name}"}
+        list_artist
       when "list genre"
-        puts "Which genre?"
-        genre = gets.chomp
-        genre = Genre.find_by_name(genre)
-        genre.songs.each{|x| puts "#{x.artist.name} - #{x.name} - #{x.genre.name}"}
+        list_genre
+      when "exit"
+        puts "Goodbye" 
+      else
+        puts "invalid action"
       end
+    end
+  end
+   def list_songs
+    Song.all.each_with_index {|song,index|puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"}
+  end
+   def list_artists
+    Artist.all.each {|artist| puts artist.name}
+  end
+   def list_genres
+    Genre.all.each {|genre| puts genre.name}
+  end
+   def play_song
+    song = Song.all[gets.to_i - 1]
+    puts "Playing #{song.artist.name} - #{song.name} - #{song.genre.name}"
+  end
+   def list_artist
+    puts "Enter artist"
+    specific_artist = gets.chomp
+    if Artist.find_by_name(specific_artist) != nil
+      Artist.find_by_name(specific_artist).songs.each {|song| puts "#{song.artist.name} - #{song.name} - #{song.genre.name}"}
+    else
+      puts "Artist does not exist"
+    end
+  end
+   def list_genre
+    puts "Enter genre"
+    specific_genre = gets.chomp
+    if Genre.find_by_name(specific_genre) != nil
+      Genre.find_by_name(specific_genre).songs.each {|song| puts "#{song.artist.name} - #{song.name} - #{song.genre.name}"}
+    else
+      puts "Genre does not exist"
     end
   end
  end
