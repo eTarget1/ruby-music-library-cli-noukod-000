@@ -18,11 +18,11 @@ class MusicLibraryController
       command = gets.chomp.downcase
       case command
        when "list songs"
-         Song.all.each_with_index{|song, index| 
+         Song.all.each_with_index{|song, index|
          puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"}
       when "list artists"
         Artist.all.each{|artist| puts artist.name}
-      when "list genres" 
+      when "list genres"
         Genre.all.each{|genre| puts genre.name}
       when "play song"
         puts "Which song?"
