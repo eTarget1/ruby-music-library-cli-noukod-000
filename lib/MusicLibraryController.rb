@@ -1,30 +1,45 @@
 class MusicLibraryController
   attr_accessor :importer
   def initialize(path="./db/mp3s")
-    importer = MusicImporter.new(path)
+    @importer = MusicImporter.new(path)
     importer.import
   end
-  # Instance Method(s)
- def call
-   user_selection = nil
-   while user_selection != "exit"
-     puts "Welcome to your music library!"
-     puts "To list all of your songs, enter 'list songs'."
-     puts "To list all of the artists in your library, enter 'list artists'."
-     puts "To list all of the genres in your library, enter 'list genres'."
-     puts "To list all of the songs by a particular artist, enter 'list artist'."
-     puts "To list all of the songs of a particular genre, enter 'list genre'."
-     puts "To play a song, enter 'play song'."
-     puts "To quit, type 'exit'."
-     puts "What would you like to do?"
-     user_selection = gets.strip
-     case user_selection
-     when 'list songs' then list_songs
-     when 'list artists' then list_artists
-     when 'list genres' then list_genres
-     when 'list artist' then list_songs_by_artist
-     when 'list genre' then list_songs_by_genre
-     when 'play song' then play_song
-     end
-   end
+   def call
+    puts "Yo! Welcome to this cool Music Library!"
+    command = " "
+     until command == "exit"
+      puts "Type in one of the following commands:"
+      puts "List Songs"
+      puts "List Artists"
+      puts "List Genres"
+      puts "Play Song"
+      puts "List Artist"
+      puts "List Genre"
+      command = gets.chomp.downcase
+      case command
+       when "list songs"
+         Song.all.each_with_index{|song, index| 
+         puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"}
+      when "list artists"
+        Artist.all.each{|artist| puts artist.name}
+      when "list genres" 
+        Genre.all.each{|genre| puts genre.name}
+      when "play song"
+        puts "Which song?"
+        song = gets.chomp.to_i
+        file_name = Song.all[song - 1]
+        puts "Playing #{file_name.artist.name} - #{file_name.name} - #{file_name.genre.name}"
+      when "list artist"
+        puts "Which artist?"
+        artist = gets.chomp
+        artist = Artist.find_by_name(artist)
+        artist.songs.each{|a| puts "#{artist.name} - #{a.name} - #{a.genre.name}"}
+      when "list genre"
+        puts "Which genre?"
+        genre = gets.chomp
+        genre = Genre.find_by_name(genre)
+        genre.songs.each{|x| puts "#{x.artist.name} - #{x.name} - #{x.genre.name}"}
+      end
+    end
+  end
  end
