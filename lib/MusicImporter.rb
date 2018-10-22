@@ -1,12 +1,23 @@
 class MusicImporter
-   attr_reader :path
-   def initialize(path)
+
+  attr_reader :path
+
+  def initialize(path)
     @path = path
   end
-   def files
-    @files ||= Dir.glob("#{path}/*.mp3").collect{|f| f.gsub("#{path}/", "")}
+
+  # Instance Methods
+  def files
+    file_list = []
+    Dir.foreach(path) do |file|
+      if file.end_with?("mp3")
+        file_list << file
+      end
+    end
+    file_list
   end
-   def import
-    files.each{|f| Song.create_from_filename(f)}
+
+  def import
+    files.each {|filename| Song.create_from_filename(filename)}
   end
-end 
+end
