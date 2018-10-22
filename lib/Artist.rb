@@ -15,6 +15,12 @@ class Artist
     
   end
 
+  def saved
+
+  end
+    
+  end
+
 
 
 
