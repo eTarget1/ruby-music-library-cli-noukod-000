@@ -29,9 +29,10 @@ class Artist
     artist = Artist.new(name)
     artist.save
     artist
+  end
 
-
-
+  def add_song 
+    
   end
 
   end
